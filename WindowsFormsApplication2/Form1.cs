@@ -23,7 +23,7 @@ namespace WindowsFormsApplication2
 
         public void clickFunction(int num)
         {
-            if (textBox1.Text == "0")
+            if (textBox1.Text == "" || textBox1.Text == "分母不能为0")
                 textBox1.Text = null;
             textBox1.Text = textBox1.Text + num.ToString();
         }
@@ -33,11 +33,11 @@ namespace WindowsFormsApplication2
             if (this.mode == 'i')
             {
                 this.beforeInput = double.Parse(textBox1.Text);
-                textBox1.Text = "0";
+                textBox1.Text = "";
                 this.mode = s;
             }
         }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             clickFunction(1);
@@ -46,6 +46,12 @@ namespace WindowsFormsApplication2
         private void button2_Click(object sender, EventArgs e)
         {
             clickFunction(2);
+        }
+
+        private void buttonNum_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            clickFunction(int.Parse(btn.Text));
         }
 
         private void button16_Click(object sender, EventArgs e)
@@ -69,9 +75,17 @@ namespace WindowsFormsApplication2
                     this.mode = 'i';
                     break;
                 case '/':
-                    this.beforeInput = this.beforeInput / this.afterInput;
-                    textBox1.Text = this.beforeInput.ToString();
-                    this.mode = 'i';
+                    if (this.afterInput == 0)
+                    {
+                        textBox1.Text = "分母不能为0";
+                        this.mode = 'i';
+                    }
+                    else
+                    {
+                        this.beforeInput = this.beforeInput / this.afterInput;
+                        textBox1.Text = this.beforeInput.ToString();
+                        this.mode = 'i';
+                    }
                     break;
                 default :
                     textBox1.Text = "0";
