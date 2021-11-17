@@ -23,7 +23,7 @@ namespace WindowsFormsApplication2
 
         public void clickFunction(int num)
         {
-            if (textBox1.Text == "" || textBox1.Text == "分母不能为0")
+            if (textBox1.Text == "" || textBox1.Text == "分母不能为0" || textBox1.Text == "0")
                 textBox1.Text = null;
             textBox1.Text = textBox1.Text + num.ToString();
         }
@@ -35,6 +35,42 @@ namespace WindowsFormsApplication2
                 this.beforeInput = double.Parse(textBox1.Text);
                 textBox1.Text = "";
                 this.mode = s;
+            }
+            else
+            {
+                switch (this.mode)
+                { 
+                    case '+' :
+                        this.beforeInput = this.beforeInput + double.Parse(textBox1.Text);
+                        textBox1.Text = "";
+                        this.mode = s;
+                        break;
+                    case '-':
+                        this.beforeInput = this.beforeInput - double.Parse(textBox1.Text);
+                        textBox1.Text = "";
+                        this.mode = s;
+                        break;
+                    case '*':
+                        this.beforeInput = this.beforeInput * double.Parse(textBox1.Text);
+                        textBox1.Text = "";
+                        this.mode = s;
+                        break;
+                    case '/':
+                        if (this.afterInput == 0)
+                        {
+                            textBox1.Text = "分母不能为0";
+                            this.mode = 'i';
+                        }
+                        else
+                        {
+                            this.beforeInput = this.beforeInput / double.Parse(textBox1.Text);
+                            textBox1.Text = "";
+                            this.mode = s;
+                        }
+                        
+                        break;
+                }
+                
             }
         }
         
@@ -54,12 +90,11 @@ namespace WindowsFormsApplication2
             clickFunction(int.Parse(btn.Text));
         }
 
-        private void button16_Click(object sender, EventArgs e)
+        public void runResult()
         {
-            this.afterInput = double.Parse(textBox1.Text);
             switch (this.mode)
             {
-                case '+' :
+                case '+':
                     this.beforeInput = this.beforeInput + this.afterInput;
                     textBox1.Text = this.beforeInput.ToString();
                     this.mode = 'i';
@@ -87,12 +122,16 @@ namespace WindowsFormsApplication2
                         this.mode = 'i';
                     }
                     break;
-                default :
+                default:
                     textBox1.Text = "0";
                     break;
-
             }
-            
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            this.afterInput = double.Parse(textBox1.Text);
+            this.runResult();
         }
 
         private void button4_Click(object sender, EventArgs e)
